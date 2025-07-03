@@ -67,22 +67,24 @@ const emojiMap = {
   'Minibar': '🍷 Minibar'
 };
 
-// Zimmer aus MySQL laden
-async function getRoomsFromDB() {
+// === ZIMMER AUS DATENBANK LADEN ===
+async function getAllZimmer() {
   try {
+    // ÄNDERE: zimmer → rooms
     const [rows] = await db.execute('SELECT * FROM rooms ORDER BY id');
     
     return rows.map(room => ({
+      id: room.id,
       name: room.name,
       description: room.description,
       price: room.price,
       image: room.image,
       available: room.available,
-      features: room.features.split(',').map(f => emojiMap[f.trim()] || f.trim())
+      features: room.features ? room.features.split(',').map(f => emojiMap[f.trim()] || f.trim()) : []
     }));
   } catch (error) {
-    console.log('❌ DB-Fehler, verwende JSON-Fallback:', error.message);
-    return getRoomsFromJSON();
+    console.error('❌ Fehler beim Abrufen der Zimmer:', error);
+    return [];
   }
 }
 
