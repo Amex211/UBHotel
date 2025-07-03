@@ -1,0 +1,28 @@
+<main class="media-page">
+  <h2>Media Galerie</h2>
+
+  <section class="videos">
+    <h3>Unsere Hotel-Videos</h3>
+    <div class="video-grid">
+      <iframe src="https://www.youtube.com/embed/Scxs7L0vhZ4" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/TcMBFSGVi1c" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <section class="bilder">
+    <h3>Einblicke in die Umgebung</h3>
+    <div class="image-grid">
+      <% images.forEach(img => { %>
+        <img src="<%= img.url %>" alt="<%= img.name %>" class="media-img" />
+      <% }) %>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+</main>
+
+<script src="/scripts/media.js"></script>

@@ -1,0 +1,113 @@
+/* === SIMPLE ABER COOLE HOTEL STYLES === */
+
+/* 🎯 Basis Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🌐 Globale Einstellungen */
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  background: #f8fafc;
+  color: #333;
+}
+
+/* 📦 Layout Container */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ✨ Coole Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  color: white;
+}
+
+/* 🏨 Hotel Logo */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+/* 🔗 Navigation Links */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+/* 📄 Hauptinhalt */
+.main-content {
+  flex: 1;
+  min-height: 400px;
+}
+
+/* 🦶 Footer */
+.footer {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+}
+
+.footer p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .navbar-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .navbar-links a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}

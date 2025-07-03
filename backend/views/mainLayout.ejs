@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %></title>
+  
+  <% if (styles) { styles.forEach(style => { %>
+    <link rel="stylesheet" href="<%= style %>">
+  <% }) } %>
+     
+  <!-- Cool aber einfach: Google Fonts für bessere Typografie -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="layout-wrapper">
+         
+    <!-- 🏨 Coole Navbar mit Gradient -->
+    <nav class="navbar">
+      <!-- KLICKBARES BRAND LOGO -->
+      <a href="/" class="navbar-brand">
+        🏨 UBHotel
+      </a>
+      
+      <ul class="navbar-links">
+        <li><a href="/zimmer">🏠 Zimmer</a></li>
+        <li><a href="/events">🎉 Events</a></li>
+        <li><a href="/buchung">📅 Buchung</a></li>
+        <li><a href="/media">📸 Media</a></li>
+        <li><a href="/wetter">🌤️ Wetter</a></li>
+      </ul>
+    </nav>
+
+    <!-- 📄 Hauptinhalt mit cooler Animation -->
+    <main class="main-content fade-in">
+      <%- body %>
+    </main>
+
+    <!-- 🦶 Stylischer Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p><strong>🏨 UBHotel GmbH</strong></p>
+        <p>📍 Klarastraße 1/1 – 73730 Esslingen am Neckar</p>
+        <p>👨‍💼 Geschäftsführer: Amel Abdic</p>
+        <p>📧 <a href="mailto:info@ubhotel.de">info@ubhotel.de</a></p>
+      </div>
+    </footer>
+       
+  </div>
+
+  <!-- Simple aber coole JavaScript Animation -->
+  <script>
+    // Einfache Fade-in Animation für Seiteninhalte
+    document.addEventListener('DOMContentLoaded', function() {
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.style.opacity = '0';
+        mainContent.style.transform = 'translateY(20px)';
+                
+        setTimeout(() => {
+          mainContent.style.transition = 'all 0.6s ease';
+          mainContent.style.opacity = '1';
+          mainContent.style.transform = 'translateY(0)';
+        }, 100);
+      }
+             
+      // Aktive Seite highlighten
+      const currentPath = window.location.pathname;
+      const navLinks = document.querySelectorAll('.navbar-links a');
+             
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.style.background = 'rgba(255,255,255,0.3)';
+          link.style.fontWeight = '600';
+        }
+      });
+    });
+  </script>
+
+  <% if (scripts) { scripts.forEach(script => { %>
+    <script src="<%= script %>"></script>
+  <% }) } %>
+</body>
+</html>

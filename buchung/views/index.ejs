@@ -1,0 +1,49 @@
+<main class="buchung">
+  <div class="buchung-container">
+    <!-- 📋 Überschrift mit Icon -->
+    <h2>📅 Buchen Sie Ihren Aufenthalt</h2>
+    
+    <!-- 📝 Buchungsformular -->
+    <form id="buchungForm">
+      
+      <!-- 👤 Name -->
+      <label for="name">👤 Vollständiger Name</label>
+      <input type="text" id="name" name="name" placeholder="Max Mustermann" required>
+      
+      <!-- 📧 E-Mail -->
+      <label for="email">📧 E-Mail-Adresse</label>
+      <input type="email" id="email" name="email" placeholder="max@example.com" required>
+      
+      <!-- 🏠 Adresse -->
+      <label for="adresse">🏠 Adresse</label>
+      <input type="text" id="adresse" name="adresse" placeholder="Musterstraße 1, 12345 Stadt" required>
+      
+      <!-- 🏨 Zimmerkategorie -->
+      <label for="zimmer">🏨 Zimmerkategorie</label>
+      <select id="zimmer" name="zimmer" required>
+        <option value="">Bitte wählen</option>
+        <option value="standard">🛏️ Standard Zimmer</option>
+        <option value="deluxe">✨ Deluxe Zimmer</option>
+        <option value="suite">👑 Suite</option>
+      </select>
+      
+      <!-- 📅 Anreisedatum -->
+      <label for="anreise">📅 Anreisedatum</label>
+      <input type="date" id="anreise" name="anreise" required>
+      
+      <!-- 📅 Abreisedatum -->
+      <label for="abreise">📅 Abreisedatum</label>
+      <input type="date" id="abreise" name="abreise" required>
+      
+      <!-- 💳 Buchungs-Button -->
+      <button type="submit">💳 Kaufen auf Rechnung</button>
+      
+    </form>
+    
+    <!-- ✅ Erfolgs-Nachricht -->
+    <div id="buchungErfolg" class="hidden">
+      🎉 Vielen Dank! Ihre Buchung ist eingegangen.
+    </div>
+    
+  </div>
+</main>

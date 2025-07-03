@@ -1,0 +1,61 @@
+<!-- 🏨 Header Bereich -->
+<div class="zimmer-header">
+  <h1>🏠 Unsere Zimmer</h1>
+  <p>Finden Sie das perfekte Zimmer für Ihren Aufenthalt</p>
+</div>
+
+<!-- 🎠 Swiper Karussell -->
+<div class="swiper-container mySwiper">
+  <div class="swiper-wrapper">
+    <% rooms.forEach((room, index) => { %>
+      <div class="swiper-slide">
+        <div class="zimmer-card">
+          
+          <!-- 🖼️ Zimmer Bild mit Verfügbarkeits-Badge -->
+          <div class="zimmer-image-container">
+            <img src="/zimmer<%= room.image %>" 
+                 alt="<%= room.name %>" 
+                 class="zimmer-image">
+            
+            <!-- 🎯 Verfügbarkeits-Badge -->
+            <div class="availability-badge <%= room.available <= 1 ? 'sold-out' : room.available <= 2 ? 'low' : '' %>">
+              <% if (room.available > 0) { %>
+                Noch <%= room.available %> frei
+              <% } else { %>
+                Ausgebucht
+              <% } %>
+            </div>
+            
+            <!-- 🏷️ Zimmer Name Overlay -->
+            <div class="zimmer-name">
+              <%= room.name %>
+            </div>
+          </div>
+          
+          <!-- 📝 Zimmer Informationen -->
+          <div class="zimmer-info">
+            <p><%= room.description %></p>
+            
+            <!-- 🌟 Features -->
+            <div class="zimmer-features">
+              <% room.features.forEach(feature => { %>
+                <span class="feature-icon"><%= feature %></span>
+              <% }) %>
+            </div>
+            
+            <!-- 💰 Preis -->
+            <div class="zimmer-price"><%= room.price %></div>
+          </div>
+          
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- 🎠 Navigation Buttons -->
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  
+  <!-- 🔘 Pagination Dots -->
+  <div class="swiper-pagination"></div>
+</div>
