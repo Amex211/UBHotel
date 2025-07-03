@@ -1,46 +1,28 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 
 const app = express();
 const PORT = 3000;
 
-// Versuche MySQL zu laden, falls verfügbar
-let mysql;
-try {
-  mysql = require('mysql2/promise');
-} catch (error) {
-  console.log('📋 MySQL nicht verfügbar, verwende JSON-Fallback');
-}
+// MySQL laden
+const mysql = require('mysql2/promise');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// MySQL Connection (optional)
-let db = null;
-if (mysql) {
-  const dbConfig = {
-    host: 'zimmer-mysql',
-    user: 'root',
-    password: 'root',
-    database: 'ubhotel_zimmer',
-    charset: 'utf8mb4'
-  };
+// MySQL Connection
+const dbConfig = {
+  host: 'zimmer-mysql',
+  user: 'root',
+  password: 'root',
+  database: 'ubhotel_zimmer',
+  charset: 'utf8mb4'
+};
 
-  // Versuche DB-Verbindung
-  mysql.createPool(dbConfig).getConnection()
-    .then(connection => {
-      db = mysql.createPool(dbConfig);
-      connection.release();
-      console.log('✅ MySQL verbunden - verwende Datenbank');
-    })
-    .catch(error => {
-      console.log('📋 MySQL nicht erreichbar - verwende JSON-Fallback');
-    });
-}
+const db = mysql.createPool(dbConfig);
 
-// Emoji-Mapping (wie in deiner JSON)
+// Emoji-Mapping
 const emojiMap = {
   'Whirlpool': '🔥 Whirlpool',
   'WLAN': '📶 WLAN',
@@ -66,7 +48,7 @@ const emojiMap = {
   'Minibar': '🍷 Minibar'
 };
 
-// === ZIMMER AUS DATENBANK LADEN ===
+// === NUR DATENBANK - ZIMMER LADEN ===
 async function getAllZimmer() {
   try {
     const [rows] = await db.execute('SELECT * FROM rooms ORDER BY id');
@@ -82,42 +64,41 @@ async function getAllZimmer() {
     }));
   } catch (error) {
     console.error('❌ Fehler beim Abrufen der Zimmer:', error);
-    return [];
+    throw error; // Fehler weiterwerfen statt leeres Array zurückgeben
   }
 }
 
-// JSON-Fallback Funktion
-function getRoomsFromJSON() {
-  try {
-    const data = fs.readFileSync(path.join(__dirname, "data", "rooms.json"));
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('❌ Fehler beim Lesen der JSON-Datei:', error);
-    return [];
-  }
-}
-
-// Hauptroute - KORRIGIERT: getRoomsFromDB() → getAllZimmer()
+// Hauptroute - NUR DATENBANK
 app.get("/", async (req, res) => {
-  let rooms;
-  
-  if (db) {
-    rooms = await getAllZimmer();  // ← HIER WAR DER FEHLER
+  try {
+    const rooms = await getAllZimmer();
     console.log(`📊 ${rooms.length} Zimmer aus MySQL geladen`);
-  } else {
-    rooms = getRoomsFromJSON();
-    console.log(`📋 ${rooms.length} Zimmer aus JSON geladen`);
+    res.render("zimmer", { rooms });
+  } catch (error) {
+    console.error('❌ Datenbankfehler:', error);
+    res.status(500).render("error", { 
+      message: "Fehler beim Laden der Zimmer",
+      error: process.env.NODE_ENV === 'development' ? error : {}
+    });
   }
-  
-  res.render("zimmer", { rooms });
 });
 
-// Fehlerbehandlung für unbekannte Routen
+// Gesundheitscheck
+app.get("/health", async (req, res) => {
+  try {
+    await db.execute('SELECT 1');
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (error) {
+    res.status(500).json({ status: 'error', database: 'disconnected' });
+  }
+});
+
+// 404 Handler
 app.use((req, res) => {
   res.status(404).send('Seite nicht gefunden');
 });
 
-// Globale Fehlerbehandlung
+// Fehlerbehandlung
 app.use((error, req, res, next) => {
   console.error('❌ Server-Fehler:', error);
   res.status(500).send('Interner Server-Fehler');
@@ -125,4 +106,5 @@ app.use((error, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`🏠 Zimmer-Service läuft auf http://localhost:${PORT}`);
+  console.log(`📊 Verwende nur MySQL-Datenbank`);
 });
