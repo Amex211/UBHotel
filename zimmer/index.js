@@ -63,14 +63,12 @@ const emojiMap = {
   'Naturblick': '☀️ Naturblick',
   'Bio-Frühstück': '🍽 Bio-Frühstück',
   'Skyline': '🏙 Skyline',
-  'Whirlpool': '🛁 Whirlpool',
   'Minibar': '🍷 Minibar'
 };
 
 // === ZIMMER AUS DATENBANK LADEN ===
 async function getAllZimmer() {
   try {
-    // ÄNDERE: zimmer → rooms
     const [rows] = await db.execute('SELECT * FROM rooms ORDER BY id');
     
     return rows.map(room => ({
@@ -88,18 +86,23 @@ async function getAllZimmer() {
   }
 }
 
-// Deine bestehende JSON-Funktion (unverändert)
+// JSON-Fallback Funktion
 function getRoomsFromJSON() {
-  const data = fs.readFileSync(path.join(__dirname, "data", "rooms.json"));
-  return JSON.parse(data);
+  try {
+    const data = fs.readFileSync(path.join(__dirname, "data", "rooms.json"));
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('❌ Fehler beim Lesen der JSON-Datei:', error);
+    return [];
+  }
 }
 
-// Hauptroute (fast unverändert)
+// Hauptroute - KORRIGIERT: getRoomsFromDB() → getAllZimmer()
 app.get("/", async (req, res) => {
   let rooms;
   
   if (db) {
-    rooms = await getRoomsFromDB();
+    rooms = await getAllZimmer();  // ← HIER WAR DER FEHLER
     console.log(`📊 ${rooms.length} Zimmer aus MySQL geladen`);
   } else {
     rooms = getRoomsFromJSON();
@@ -107,6 +110,17 @@ app.get("/", async (req, res) => {
   }
   
   res.render("zimmer", { rooms });
+});
+
+// Fehlerbehandlung für unbekannte Routen
+app.use((req, res) => {
+  res.status(404).send('Seite nicht gefunden');
+});
+
+// Globale Fehlerbehandlung
+app.use((error, req, res, next) => {
+  console.error('❌ Server-Fehler:', error);
+  res.status(500).send('Interner Server-Fehler');
 });
 
 app.listen(PORT, () => {
