@@ -7,31 +7,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isLoading = false;
 
-  // Add smooth transitions between weather changes
+
   function updateWeatherWithAnimation(data) {
     if (isLoading) return;
     
     isLoading = true;
     widgetEl.classList.add('loading');
 
-    // Fade out current content
+  
     [ortEl, tempEl, beschrEl, iconEl].forEach(el => {
       el.style.opacity = '0';
       el.style.transform = 'translateY(20px)';
     });
 
     setTimeout(() => {
-      // Update content
+
       ortEl.textContent = data.ort;
       tempEl.textContent = data.temperatur;
       beschrEl.textContent = data.beschreibung;
       iconEl.src = data.icon;
       iconEl.alt = data.beschreibung;
 
-      // Animate background based on weather
+ 
       updateBackgroundForWeather(data.beschreibung);
 
-      // Fade in new content
+
       setTimeout(() => {
         [ortEl, tempEl, beschrEl, iconEl].forEach((el, index) => {
           setTimeout(() => {
@@ -46,14 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 300);
   }
 
-  // Dynamic background based on weather condition
+  
   function updateBackgroundForWeather(beschreibung) {
     const page = document.querySelector('.wetter-page');
     
-    // Remove existing weather classes
+   
     page.classList.remove('sunny', 'cloudy', 'rainy', 'stormy');
     
-    // Add appropriate class based on weather
+    
     if (beschreibung.toLowerCase().includes('sonnig')) {
       page.classList.add('sunny');
       page.style.background = 'linear-gradient(135deg, #74b9ff 0%, #fdcb6e 50%, #fd79a8 100%)';
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Add ripple effect on widget click
+  
   function createRipple(event) {
     const widget = event.currentTarget;
     const ripple = document.createElement('span');
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 600);
   }
 
-  // Add ripple styles
+  
   const style = document.createElement('style');
   style.textContent = `
     .wetter-widget {
@@ -120,10 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   document.head.appendChild(style);
 
-  // Add click handler for ripple effect
+ 
   widgetEl.addEventListener('click', createRipple);
 
-  // Enhanced error handling
+  
   async function ladeWetter() {
     try {
       const controller = new AbortController();
@@ -141,23 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await res.json();
       
-      // Validate data structure
+      
       if (!data || !data.ort || !data.temperatur || !data.beschreibung) {
         throw new Error('Invalid weather data structure');
       }
 
       updateWeatherWithAnimation(data);
 
-      // Show success indicator
+      
       showStatusIndicator('success');
 
     } catch (err) {
       console.error("Fehler beim Laden der Wetterdaten", err);
       
-      // Show error indicator
+      
       showStatusIndicator('error');
       
-      // Fallback data
+      
       const fallbackData = {
         ort: "Esslingen",
         temperatur: "--°C",
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Status indicator for feedback
+  
   function showStatusIndicator(type) {
     const existing = document.querySelector('.status-indicator');
     if (existing) existing.remove();
@@ -231,25 +231,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
-  // Add smooth transitions to elements
+ 
   [ortEl, tempEl, beschrEl, iconEl].forEach(el => {
     el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
   });
 
-  // Initial load
+
   ladeWetter();
   
-  // Set up auto-refresh with exponential backoff on errors
+ 
   let retryCount = 0;
   const maxRetries = 3;
   
   function scheduleNextUpdate() {
-    const baseInterval = 10000; // 10 seconds
+    const baseInterval = 10000; 
     const interval = retryCount > 0 ? baseInterval * Math.pow(2, retryCount) : baseInterval;
     
     setTimeout(() => {
       ladeWetter().then(() => {
-        retryCount = 0; // Reset on success
+        retryCount = 0; 
         scheduleNextUpdate();
       }).catch(() => {
         retryCount = Math.min(retryCount + 1, maxRetries);
@@ -260,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   scheduleNextUpdate();
 
-  // Add keyboard accessibility
   widgetEl.setAttribute('tabindex', '0');
   widgetEl.setAttribute('role', 'button');
   widgetEl.setAttribute('aria-label', 'Wetterdaten aktualisieren');

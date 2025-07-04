@@ -1,4 +1,4 @@
-// === BUCHUNG SERVICE MIT MARIADB ===
+//  BUCHUNG SERVICE MIT MARIADB 
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql2/promise');
@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = 3000;
 
-// === DATENBANK KONFIGURATION ===
+//  DATENBANK KONFIGURATION 
 const dbConfig = {
   host: process.env.DB_HOST || 'buchung-mysql',
   user: process.env.DB_USER || 'root',
@@ -15,32 +15,32 @@ const dbConfig = {
   charset: 'utf8mb4'
 };
 
-// === DATENBANK VERBINDUNG ===
+//  DATENBANK VERBINDUNG 
 let db;
 
-// === RETRY-FUNKTION FÜR DB-VERBINDUNG ===
+//  RETRY-FUNKTION FÜR DB-VERBINDUNG 
 async function connectWithRetry(maxRetries = 10, delay = 3000) {
   for (let i = 0; i < maxRetries; i++) {
     try {
-      console.log(`🔄 Verbindungsversuch ${i + 1}/${maxRetries} zur Buchung-DB...`);
+      console.log(` Verbindungsversuch ${i + 1}/${maxRetries} zur Buchung-DB...`);
       db = await mysql.createConnection(dbConfig);
-      console.log('✅ Erfolgreich mit Buchung-DB verbunden');
+      console.log(' Erfolgreich mit Buchung-DB verbunden');
       return db;
     } catch (error) {
-      console.error(`❌ Verbindungsversuch ${i + 1} fehlgeschlagen:`, error.message);
+      console.error(` Verbindungsversuch ${i + 1} fehlgeschlagen:`, error.message);
       
       if (i === maxRetries - 1) {
-        console.error('💥 Maximale Anzahl von Verbindungsversuchen erreicht');
+        console.error(' Maximale Anzahl von Verbindungsversuchen erreicht');
         process.exit(1);
       }
       
-      console.log(`⏳ Warte ${delay/1000} Sekunden vor dem nächsten Versuch...`);
+      console.log(` Warte ${delay/1000} Sekunden vor dem nächsten Versuch...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 }
 
-// === DATENBANK INITIALISIERUNG ===
+//  DATENBANK INITIALISIERUNG 
 async function initializeDB() {
   try {
     // Buchungen-Tabelle erstellen
@@ -59,14 +59,14 @@ async function initializeDB() {
       )
     `);
     
-    console.log('✅ Buchungen-Tabelle bereit');
+    console.log(' Buchungen-Tabelle bereit');
     
   } catch (error) {
-    console.error('❌ DB-Initialisierung fehlgeschlagen:', error);
+    console.error(' DB-Initialisierung fehlgeschlagen:', error);
   }
 }
 
-// === BUCHUNG ERSTELLEN ===
+//  BUCHUNG ERSTELLEN 
 async function createBuchung(buchungsDaten) {
   try {
     const { name, email, adresse, zimmer, anreise, abreise } = buchungsDaten;
@@ -77,33 +77,33 @@ async function createBuchung(buchungsDaten) {
       [name, email, adresse, zimmer, anreise, abreise]
     );
     
-    console.log(`✅ Buchung erstellt mit ID: ${result.insertId}`);
+    console.log(` Buchung erstellt mit ID: ${result.insertId}`);
     return result.insertId;
   } catch (error) {
-    console.error('❌ Fehler beim Erstellen der Buchung:', error);
+    console.error(' Fehler beim Erstellen der Buchung:', error);
     throw error;
   }
 }
 
-// === ALLE BUCHUNGEN ABRUFEN ===
+//  ALLE BUCHUNGEN ABRUFEN 
 async function getAllBuchungen() {
   try {
     const [rows] = await db.execute('SELECT * FROM buchungen ORDER BY created_at DESC');
     return rows;
   } catch (error) {
-    console.error('❌ Fehler beim Abrufen der Buchungen:', error);
+    console.error(' Fehler beim Abrufen der Buchungen:', error);
     return [];
   }
 }
 
-// === EXPRESS KONFIGURATION ===
+//  EXPRESS KONFIGURATION 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// === ROUTES ===
+// ROUTES 
 
 // Buchungsformular anzeigen
 app.get('/', (req, res) => {
@@ -149,7 +149,7 @@ app.post('/api/buchung', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('❌ Fehler bei Buchungserstellung:', error);
+    console.error(' Fehler bei Buchungserstellung:', error);
     res.status(500).json({ 
       error: 'Fehler beim Erstellen der Buchung' 
     });
@@ -162,7 +162,7 @@ app.get('/api/buchungen', async (req, res) => {
     const buchungen = await getAllBuchungen();
     res.json(buchungen);
   } catch (error) {
-    console.error('❌ API-Fehler:', error);
+    console.error(' API-Fehler:', error);
     res.status(500).json({ error: 'Fehler beim Abrufen der Buchungen' });
   }
 });
@@ -173,12 +173,12 @@ app.get('/admin', async (req, res) => {
     const buchungen = await getAllBuchungen();
     res.render('admin', { buchungen });
   } catch (error) {
-    console.error('❌ Fehler beim Laden der Admin-Seite:', error);
+    console.error(' Fehler beim Laden der Admin-Seite:', error);
     res.status(500).json({ error: 'Fehler beim Laden der Buchungen' });
   }
 });
 
-// === HEALTH CHECK ===
+//  HEALTH CHECK 
 app.get('/health', async (req, res) => {
   try {
     await db.execute('SELECT 1');
@@ -188,20 +188,20 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// === SERVER STARTEN ===
+//  SERVER STARTEN 
 async function startServer() {
   await connectWithRetry();
   await initializeDB();
   
   app.listen(PORT, () => {
-    console.log(`📅 Buchung-Service läuft auf http://localhost:${PORT}`);
-    console.log(`🗄️ Buchungen werden in der Datenbank gespeichert!`);
+    console.log(` Buchung-Service läuft auf http://localhost:${PORT}`);
+    console.log(` Buchungen werden in der Datenbank gespeichert!`);
   });
 }
 
-// === GRACEFUL SHUTDOWN ===
+//  GRACEFUL SHUTDOWN 
 process.on('SIGTERM', async () => {
-  console.log('🔄 Buchung-Service wird beendet...');
+  console.log(' Buchung-Service wird beendet...');
   if (db) {
     await db.end();
   }

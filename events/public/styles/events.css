@@ -1,13 +1,11 @@
-/* === EVENTS SEITE - COOL & EINFACH === */
 
-/* 🎨 Seiten-Hintergrund mit Gradient */
 .events-page {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   padding: 2rem 0;
 }
 
-/* 🎭 Header Bereich */
+
 .events-header {
   text-align: center;
   padding: 2rem;
@@ -29,14 +27,14 @@
   animation: fadeIn 0.8s ease-out 0.3s both;
 }
 
-/* 🎪 Events Container */
+
 .events-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-/* 📱 Events Grid */
+
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -44,7 +42,7 @@
   padding: 1rem 0;
 }
 
-/* 🎫 Event Card */
+
 .event-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
@@ -61,7 +59,7 @@
   box-shadow: 0 30px 80px rgba(0,0,0,0.25);
 }
 
-/* 🖼️ Event Bild */
+
 .event-image-container {
   width: 100%;
   height: 200px;
@@ -80,7 +78,6 @@
   transform: scale(1.1);
 }
 
-/* 📝 Event Info */
 .event-info {
   padding: 1.5rem;
 }
@@ -102,7 +99,7 @@
   margin-bottom: 1rem;
 }
 
-/* 📍 Event Meta Info */
+
 .event-meta {
   margin: 1rem 0;
   padding: 0.8rem;
@@ -127,7 +124,7 @@
   margin-left: 0.5rem;
 }
 
-/* 🏷️ Event Tags */
+
 .event-tags {
   margin-top: 1rem;
   display: flex;
@@ -151,7 +148,7 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-/* ✨ Animationen */
+
 @keyframes slideInDown {
   from {
     opacity: 0;
@@ -179,7 +176,7 @@
   to { opacity: 1; }
 }
 
-/* 📱 Mobile Responsive */
+
 @media (max-width: 768px) {
   .events-page {
     padding: 1rem 0;

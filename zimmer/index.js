@@ -63,7 +63,7 @@ async function getAllZimmer() {
       features: room.features ? room.features.split(',').map(f => emojiMap[f.trim()] || f.trim()) : []
     }));
   } catch (error) {
-    console.error('❌ Fehler beim Abrufen der Zimmer:', error);
+    console.error(' Fehler beim Abrufen der Zimmer:', error);
     throw error; // Fehler weiterwerfen statt leeres Array zurückgeben
   }
 }
@@ -72,10 +72,10 @@ async function getAllZimmer() {
 app.get("/", async (req, res) => {
   try {
     const rooms = await getAllZimmer();
-    console.log(`📊 ${rooms.length} Zimmer aus MySQL geladen`);
+    console.log(` ${rooms.length} Zimmer aus MySQL geladen`);
     res.render("zimmer", { rooms });
   } catch (error) {
-    console.error('❌ Datenbankfehler:', error);
+    console.error(' Datenbankfehler:', error);
     res.status(500).render("error", { 
       message: "Fehler beim Laden der Zimmer",
       error: process.env.NODE_ENV === 'development' ? error : {}
@@ -100,11 +100,11 @@ app.use((req, res) => {
 
 // Fehlerbehandlung
 app.use((error, req, res, next) => {
-  console.error('❌ Server-Fehler:', error);
+  console.error(' Server-Fehler:', error);
   res.status(500).send('Interner Server-Fehler');
 });
 
 app.listen(PORT, () => {
-  console.log(`🏠 Zimmer-Service läuft auf http://localhost:${PORT}`);
-  console.log(`📊 Verwende nur MySQL-Datenbank`);
+  console.log(` Zimmer-Service läuft auf http://localhost:${PORT}`);
+  console.log(` Verwende nur MySQL-Datenbank`);
 });

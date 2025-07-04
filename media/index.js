@@ -46,18 +46,17 @@ app.get('/', async (req, res) => {
   const bucketName = 'uploads';
   
   try {
-    // Check if bucket exists
     const bucketExists = await minioClient.bucketExists(bucketName);
     if (!bucketExists) {
       console.log('Bucket does not exist, creating it...');
       await minioClient.makeBucket(bucketName);
       await makeBucketPublic(bucketName);
     } else {
-      // Make sure bucket is public
+     
       await makeBucketPublic(bucketName);
     }
 
-    // Get all objects
+ 
     const objects = [];
     const stream = minioClient.listObjectsV2(bucketName, '', true);
     
@@ -65,7 +64,7 @@ app.get('/', async (req, res) => {
       objects.push(obj);
     }
 
-    // Generate PUBLIC URLs instead of presigned URLs
+ 
     const imageList = objects.map(obj => {
       // Public URL format: http://localhost:9100/bucket-name/object-name
       const publicUrl = `http://localhost:9100/${bucketName}/${obj.name}`;
@@ -84,7 +83,6 @@ app.get('/', async (req, res) => {
   }
 });
 
-// Debug route
 app.get('/debug', async (req, res) => {
   const bucketName = 'uploads';
   

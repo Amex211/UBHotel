@@ -1,13 +1,10 @@
-/* === SIMPLE ABER COOLE HOTEL STYLES === */
 
-/* 🎯 Basis Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* 🌐 Globale Einstellungen */
 html, body {
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
@@ -16,14 +13,12 @@ html, body {
   color: #333;
 }
 
-/* 📦 Layout Container */
 .layout-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* ✨ Coole Navbar */
 .navbar {
   position: sticky;
   top: 0;
@@ -37,7 +32,6 @@ html, body {
   color: white;
 }
 
-/* 🏨 Hotel Logo */
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: bold;
@@ -49,7 +43,6 @@ html, body {
   transform: scale(1.05);
 }
 
-/* 🔗 Navigation Links */
 .navbar-links {
   list-style: none;
   display: flex;
@@ -71,13 +64,11 @@ html, body {
   transform: translateY(-2px);
 }
 
-/* 📄 Hauptinhalt */
 .main-content {
   flex: 1;
   min-height: 400px;
 }
 
-/* 🦶 Footer */
 .footer {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: white;
@@ -92,7 +83,6 @@ html, body {
   opacity: 0.9;
 }
 
-/* 📱 Mobile Responsive */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;

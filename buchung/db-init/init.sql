@@ -1,5 +1,3 @@
--- === BUCHUNG DATENBANK INITIALISIERUNG ===
-
 -- Datenbank erstellen falls nicht vorhanden
 CREATE DATABASE IF NOT EXISTS ubhotel_buchung CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -25,6 +23,6 @@ CREATE INDEX idx_buchungen_email ON buchungen(email);
 CREATE INDEX idx_buchungen_anreise ON buchungen(anreise);
 CREATE INDEX idx_buchungen_status ON buchungen(status);
 
--- Beispiel-Buchung einfügen (optional)
+
 INSERT INTO buchungen (name, email, adresse, zimmer, anreise, abreise) VALUES
 ('Max Mustermann', 'max@example.com', 'Musterstraße 1, 12345 Musterstadt', 'deluxe', '2025-08-15', '2025-08-20');

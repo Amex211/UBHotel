@@ -1,32 +1,31 @@
 <main class="events-page">
   
-  <!-- 🎭 Header Bereich -->
+ 
   <div class="events-header">
     <h2>🎉 Unsere Events</h2>
     <p>Erleben Sie unvergessliche Momente in unserem Hotel</p>
   </div>
 
-  <!-- 🎪 Events Container -->
+
   <div class="events-container">
     <div class="events-grid">
       
-      <!-- 🎫 Event Cards -->
+ 
       <% events.forEach((event, index) => { %>
         <div class="event-card" data-index="<%= index %>">
           
-          <!-- 🖼️ Event Bild -->
+  
           <div class="event-image-container">
             <img src="/events/images/<%= event.image %>" 
                  alt="<%= event.title %>" 
                  class="event-image">
           </div>
           
-          <!-- 📝 Event Informationen -->
+        
           <div class="event-info">
             <h3 class="event-title"><%= event.title %></h3>
             <p class="event-description"><%= event.description %></p>
-            
-            <!-- 📍 Event Meta Daten -->
+
             <div class="event-meta">
               <div class="event-meta-item">
                 📍<strong><%= event.location %></strong>
@@ -36,7 +35,6 @@
               </div>
             </div>
             
-            <!-- 🏷️ Event Tags -->
             <% if (event.tags && event.tags.length > 0) { %>
               <div class="event-tags">
                 <% event.tags.forEach(tag => { %>

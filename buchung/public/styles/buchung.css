@@ -1,6 +1,4 @@
-/* === BUCHUNGSSEITE - COOL & EINFACH === */
 
-/* 🎨 Seiten-Hintergrund mit Gradient */
 .buchung {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
@@ -10,7 +8,6 @@
   align-items: center;
 }
 
-/* 📝 Hauptcontainer für Buchungsformular */
 .buchung-container {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
@@ -23,7 +20,6 @@
   animation: slideInUp 0.8s ease-out;
 }
 
-/* ✨ Slide-in Animation */
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -35,7 +31,6 @@
   }
 }
 
-/* 🎯 Überschrift */
 .buchung-container h2 {
   text-align: center;
   margin-bottom: 2rem;
@@ -47,7 +42,6 @@
   background-clip: text;
 }
 
-/* 🏷️ Labels für Formularfelder */
 form label {
   display: block;
   margin-top: 1.2rem;
@@ -57,7 +51,6 @@ form label {
   font-size: 0.95rem;
 }
 
-/* 📝 Eingabefelder */
 form input, 
 form select {
   width: 100%;
@@ -69,7 +62,6 @@ form select {
   background: white;
 }
 
-/* 🎨 Fokus-Effekt für Eingabefelder */
 form input:focus, 
 form select:focus {
   outline: none;
@@ -78,13 +70,11 @@ form select:focus {
   transform: translateY(-2px);
 }
 
-/* ✨ Hover-Effekt für Eingabefelder */
 form input:hover, 
 form select:hover {
   border-color: #c5cae9;
 }
 
-/* 🎯 Buchungs-Button */
 button {
   margin-top: 2rem;
   width: 100%;
@@ -100,18 +90,15 @@ button {
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-/* 🚀 Button Hover-Effekt */
 button:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
-/* 📱 Button Active-Effekt */
 button:active {
   transform: translateY(-1px);
 }
 
-/* ✅ Erfolgs-Nachricht */
 #buchungErfolg {
   margin-top: 1.5rem;
   padding: 1.2rem;
@@ -123,7 +110,6 @@ button:active {
   animation: successFadeIn 0.5s ease-out;
 }
 
-/* ✨ Erfolgs-Animation */
 @keyframes successFadeIn {
   from {
     opacity: 0;
@@ -135,12 +121,10 @@ button:active {
   }
 }
 
-/* 👁️ Versteckte Elemente */
 .hidden {
   display: none;
 }
 
-/* 📱 Mobile Responsive */
 @media (max-width: 768px) {
   .buchung {
     padding: 1rem;

@@ -1,4 +1,4 @@
-// === EVENTS SERVICE MIT MARIADB ===
+//  EVENTS SERVICE MIT MARIADB 
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql2/promise');
@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = 3000;
 
-// === DATENBANK KONFIGURATION ===
+//  DATENBANK KONFIGURATION 
 const dbConfig = {
   host: process.env.DB_HOST || 'events-mysql',
   user: process.env.DB_USER || 'root',
@@ -15,32 +15,32 @@ const dbConfig = {
   charset: 'utf8mb4'
 };
 
-// === DATENBANK VERBINDUNG ===
+//  DATENBANK VERBINDUNG 
 let db;
 
-// === RETRY-FUNKTION FÜR DB-VERBINDUNG ===
+//  RETRY-FUNKTION FÜR DB-VERBINDUNG 
 async function connectWithRetry(maxRetries = 10, delay = 3000) {
   for (let i = 0; i < maxRetries; i++) {
     try {
-      console.log(`🔄 Verbindungsversuch ${i + 1}/${maxRetries} zur Events-DB...`);
+      console.log(` Verbindungsversuch ${i + 1}/${maxRetries} zur Events-DB...`);
       db = await mysql.createConnection(dbConfig);
-      console.log('✅ Erfolgreich mit Events-DB verbunden');
+      console.log(' Erfolgreich mit Events-DB verbunden');
       return db;
     } catch (error) {
-      console.error(`❌ Verbindungsversuch ${i + 1} fehlgeschlagen:`, error.message);
+      console.error(` Verbindungsversuch ${i + 1} fehlgeschlagen:`, error.message);
       
       if (i === maxRetries - 1) {
-        console.error('💥 Maximale Anzahl von Verbindungsversuchen erreicht');
+        console.error(' Maximale Anzahl von Verbindungsversuchen erreicht');
         process.exit(1);
       }
       
-      console.log(`⏳ Warte ${delay/1000} Sekunden vor dem nächsten Versuch...`);
+      console.log(` Warte ${delay/1000} Sekunden vor dem nächsten Versuch...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 }
 
-// === DATENBANK INITIALISIERUNG ===
+//  DATENBANK INITIALISIERUNG 
 async function initializeDB() {
   try {
     // Nur Tabelle erstellen falls nicht vorhanden - keine automatischen Inserts
@@ -58,14 +58,14 @@ async function initializeDB() {
       )
     `);
     
-    console.log('✅ Events-Tabelle bereit - Daten werden von init.sql verwaltet');
+    console.log(' Events-Tabelle bereit - Daten werden von init.sql verwaltet');
     
   } catch (error) {
-    console.error('❌ DB-Initialisierung fehlgeschlagen:', error);
+    console.error(' DB-Initialisierung fehlgeschlagen:', error);
   }
 }
 
-// === ALLE EVENTS ABRUFEN ===
+//  ALLE EVENTS ABRUFEN 
 async function getAllEvents() {
   try {
     const [rows] = await db.execute('SELECT * FROM events ORDER BY created_at DESC');
@@ -76,19 +76,19 @@ async function getAllEvents() {
       tags: event.tags ? JSON.parse(event.tags) : []
     }));
   } catch (error) {
-    console.error('❌ Fehler beim Abrufen der Events:', error);
+    console.error(' Fehler beim Abrufen der Events:', error);
     return [];
   }
 }
 
-// === EXPRESS KONFIGURATION ===
+//  EXPRESS KONFIGURATION 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// === ROUTES ===
+// ROUTES 
 
 // Events-Seite anzeigen (ersetzt die alte JSON-basierte Route)
 app.get('/', async (req, res) => {
@@ -96,7 +96,7 @@ app.get('/', async (req, res) => {
     const events = await getAllEvents();
     res.render('events', { events });
   } catch (error) {
-    console.error('❌ Fehler beim Laden der Events-Seite:', error);
+    console.error(' Fehler beim Laden der Events-Seite:', error);
     res.status(500).render('error', { 
       message: 'Fehler beim Laden der Events',
       error: error 
@@ -110,7 +110,7 @@ app.get('/api/events', async (req, res) => {
     const events = await getAllEvents();
     res.json(events);
   } catch (error) {
-    console.error('❌ API-Fehler:', error);
+    console.error(' API-Fehler:', error);
     res.status(500).json({ error: 'Fehler beim Abrufen der Events' });
   }
 });
@@ -127,12 +127,12 @@ app.post('/api/events', async (req, res) => {
     
     res.json({ success: true, message: 'Event erstellt' });
   } catch (error) {
-    console.error('❌ Fehler beim Erstellen des Events:', error);
+    console.error(' Fehler beim Erstellen des Events:', error);
     res.status(500).json({ error: 'Fehler beim Erstellen des Events' });
   }
 });
 
-// === HEALTH CHECK ===
+//  HEALTH CHECK 
 app.get('/health', async (req, res) => {
   try {
     await db.execute('SELECT 1');
@@ -142,20 +142,20 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// === SERVER STARTEN ===
+//  SERVER STARTEN 
 async function startServer() {
   await connectWithRetry();
   await initializeDB();
   
   app.listen(PORT, () => {
-    console.log(`🎉 Events-Service läuft auf http://localhost:${PORT}`);
-    console.log(`📊 Events werden jetzt aus der Datenbank geladen!`);
+    console.log(` Events-Service läuft auf http://localhost:${PORT}`);
+    console.log(` Events werden jetzt aus der Datenbank geladen!`);
   });
 }
 
-// === GRACEFUL SHUTDOWN ===
+//  GRACEFUL SHUTDOWN
 process.on('SIGTERM', async () => {
-  console.log('🔄 Events-Service wird beendet...');
+  console.log(' Events-Service wird beendet...');
   if (db) {
     await db.end();
   }

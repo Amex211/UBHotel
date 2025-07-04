@@ -1,7 +1,7 @@
 -- Zimmer Database für UBHotel
 USE ubhotel_zimmer;
 
--- Zimmer Tabelle (genau wie deine JSON-Struktur)
+-- Zimmer Tabelle 
 CREATE TABLE IF NOT EXISTS rooms (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS rooms (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- Deine exakten JSON-Daten in die DB
+
 INSERT INTO rooms (name, description, price, image, available, features) VALUES
 ('Deluxe Suite mit Seeblick', 'Großzügige Suite mit King-Size Bett, Balkon und atemberaubendem Blick über den See.', '189€ pro Nacht', '/images/sea_room.jpg', 3, 'Whirlpool,WLAN,Frühstück'),
 

@@ -1,30 +1,30 @@
-// Enhanced Modal Functionality for Image Gallery
+
 document.addEventListener('DOMContentLoaded', function() {
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-img');
   const closeBtn = document.getElementsByClassName('close')[0];
   const images = document.querySelectorAll('.media-img');
 
-  // Smooth modal opening with animation
+ 
   function openModal(imageSrc) {
     modal.style.display = 'flex';
     modal.classList.remove('hidden');
     modalImg.src = imageSrc;
     
-    // Trigger animation
+   
     requestAnimationFrame(() => {
       modal.classList.add('show');
     });
     
-    // Prevent body scrolling
+  
     document.body.style.overflow = 'hidden';
   }
 
-  // Smooth modal closing with animation
+
   function closeModal() {
     modal.classList.remove('show');
     
-    // Wait for animation to complete
+
     setTimeout(() => {
       modal.style.display = 'none';
       modal.classList.add('hidden');
@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
   }
 
-  // Image click handlers
+
   images.forEach(img => {
-    // Add loading state
+
     img.addEventListener('load', function() {
       this.style.opacity = '1';
     });
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
       openModal(this.src);
     });
     
-    // Add keyboard navigation for accessibility
     img.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -52,23 +51,19 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Make images focusable for accessibility
     img.setAttribute('tabindex', '0');
     img.setAttribute('role', 'button');
     img.setAttribute('aria-label', `View ${this.alt} in full size`);
   });
 
-  // Close button
   closeBtn.addEventListener('click', closeModal);
 
-  // Click outside to close
   modal.addEventListener('click', function(e) {
     if (e.target === modal) {
       closeModal();
     }
   });
 
-  // Keyboard navigation
   document.addEventListener('keydown', function(e) {
     if (modal.classList.contains('show')) {
       if (e.key === 'Escape') {
@@ -77,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Smooth scroll to sections (bonus feature)
   function smoothScrollTo(element) {
     element.scrollIntoView({
       behavior: 'smooth',
@@ -85,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Add intersection observer for fade-in animations
   const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -100,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, observerOptions);
 
-  // Apply fade-in animation to sections
   document.querySelectorAll('.videos, .bilder').forEach(section => {
     section.style.opacity = '0';
     section.style.transform = 'translateY(30px)';
@@ -108,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(section);
   });
 
-  // Apply staggered animation to images
   images.forEach((img, index) => {
     img.style.opacity = '0';
     img.style.transform = 'translateY(20px)';
@@ -116,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(img);
   });
 
-  // Add smooth hover effects for videos
   document.querySelectorAll('.video-grid iframe').forEach(iframe => {
     iframe.addEventListener('mouseenter', function() {
       this.style.transform = 'translateY(-8px) scale(1.02)';
